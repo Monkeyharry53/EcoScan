@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div>
+  <h1 style="text-align: center;">Put the object you want to scan inside the red area</h1>
+  <div id="container">
+    <div id="sidebar-left">
+      <img src="/static/rbc.png" alt="Image 1">
+    </div>
+    <div id="video-container">
+      <video id="video-feed" autoplay></video>
+      <div id="center-lines"></div>
+      <button id="capture-button">Capture</button>
+    </div>
+    <div id="sidebar-right">
+      <img src="/static/rbc.png" alt="Image 2">
+    </div>
+  </div>
+</div> 
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div id="container">
+    <div id="sidebar-left">
+      <img src="/static/rbc.png" alt="Image 1">
+    </div>
+    <div class="content">
+      <img id="captured-image" src="{{ url_for('static', filename='user_image.png') }}">
+      <form id="feedback-form">
+        <textarea id="feedback-text" rows="5" cols="40" placeholder="Enter your feedback here"></textarea>
+        <p>Is the prediction correct?</p>
+        <input type="checkbox" id="prediction-correct-yes" name="prediction-correct" value="yes">
+        <label for="prediction-correct-yes">Yes</label>
+        <input type="checkbox" id="prediction-correct-no" name="prediction-correct" value="no">
+        <label for="prediction-correct-no">No</label>
+        <p>Did you find the information helpful?</p>
+        <input type="checkbox" id="information-helpful-yes" name="information-helpful" value="yes">
+        <label for="information-helpful-yes">Yes</label>
+        <input type="checkbox" id="information-helpful-no" name="information-helpful" value="no">
+        <label for="information-helpful-no">No</label>
+        <button type="submit" id="submit-button">Submit Feedback</button>
+      </form>
+      <button id="retake-button">Retake</button>
+    </div>
+    <div id="sidebar-right">
+      <img src="/static/rbc.png" alt="Image 2">
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/jspdf.debug.js') }}"></script>
+
+  <script>
+    const feedbackForm = document.getElementById('feedback-form');
+const feedbackText = document.getElementById('feedback-text');
+const predictionCorrectYes = document.getElementById('prediction-correct-yes');
+const predictionCorrectNo = document.getElementById('prediction-correct-no');
+const informationHelpfulYes = document.getElementById('information-helpful-yes');
+const informationHelpfulNo = document.getElementById('information-helpful-no');
+
+// Function to store the feedback in a PDF file
+function storeFeedback(event) {
+  event.preventDefault(); // Prevent form submission
+  const feedback = feedbackText.value;
+  const predictionCorrect = predictionCorrectYes.checked ? 'Yes' : 'No';
+  const informationHelpful = informationHelpfulYes.checked ? 'Yes' : 'No';
+
+  const pdf = new jsPDF();
+
+  // Add feedback text
+  pdf.text(20, 20, 'Feedback:');
+  pdf.text(30, 30, feedback);
+
+  // Add checkbox answers
+  pdf.text(20, 40, 'Is the prediction correct?');
+  pdf.text(30, 50, predictionCorrect);
+
+  pdf.text(20, 60, 'Did you find the information helpful?');
+  pdf.text(30, 70, informationHelpful);
+
+  // Embed the image in the PDF
+  const capturedImage = document.getElementById('captured-image');
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = capturedImage.width;
+  canvas.height = capturedImage.height;
+  context.drawImage(capturedImage, 0, 0);
+  const imageDataURL = canvas.toDataURL('C:/Users/manjo/rgc/static/user_image.png');
+  pdf.addPage();
+  pdf.text(20, 20, 'Captured Image:');
+  pdf.addImage(imageDataURL, 'JPEG', 20, 30, 160, 120);
+
+  // Save the PDF
+  pdf.save('feedback.pdf');
+
+  // Clear the form
+  feedbackText.value = '';
+  predictionCorrectYes.checked = false;
+  predictionCorrectNo.checked = false;
+  informationHelpfulYes.checked = false;
+  informationHelpfulNo.checked = false;
+}
+
+// Add event listener to the feedback form submission
+feedbackForm.addEventListener('submit', storeFeedback);
+
+
+    
+
+    // Function to reload the page from the
+
+
+    const retakeButton = document.getElementById('retake-button');
+
+    // Function to reload the page from the start
+    function reloadPage() {
+      window.location.href = '/';
+    }
+
+    // Add event listener to the retake button
+    retakeButton.addEventListener('click', function() {
+      // Add CSS class to flash the button
+      retakeButton.classList.add('flash');
+      setTimeout(function() {
+        retakeButton.classList.remove('flash');
+      }, 300);
+
+      // Reload the page
+      reloadPage();
+    });
+  </script>
+</body>
+</html>

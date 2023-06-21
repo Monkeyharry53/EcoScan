@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div id="container">
+    <div id="sidebar-left">
+      <img src="/static/rbc.png" alt="Image 1">
+    </div>
+    <div class="content">
+      <img id="captured-image" src="{{ url_for('static', filename='user_image.png') }}">
+      <button id="retake-button">Retake</button>
+      <form id="feedback-form" action="/display_capture" method="post">
+        <p>Is the prediction correct?</p>
+        <input type="checkbox" id="prediction-correct-yes" name="prediction_correct" value="yes">
+        <label for="prediction-correct-yes">Yes</label>
+        <input type="checkbox" id="prediction-correct-no" name="prediction_correct" value="no">
+        <label for="prediction-correct-no">No</label>
+        <p>Did you find the information helpful?</p>
+        <input type="checkbox" id="information-helpful-yes" name="information_helpful" value="yes">
+        <label for="information-helpful-yes">Yes</label>
+        <input type="checkbox" id="information-helpful-no" name="information_helpful" value="no">
+        <label for="information-helpful-no">No</label>
+        <div>
+          <textarea id="feedback-text" name="feedback" rows="5" cols="40" placeholder="Enter additional feedback here"></textarea>
+        </div>
+        <div>
+          <button type="submit" id="submit-button">Submit Feedback</button>
+        </div>
+      </form>
+      <div id="download-button">
+        <button id="download-csv-button" onclick="location.href='/download_csv'">Download CSV</button>
+      </div>
+    </div>
+    <div id="sidebar-right">
+      <img src="/static/rbc.png" alt="Image 2">
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <script>
+
+  const feedbackForm = document.getElementById('feedback-form');
+  const feedbackText = document.getElementById('feedback-text');
+  const predictionCorrectYes = document.getElementById('prediction-correct-yes');
+  const predictionCorrectNo = document.getElementById('prediction-correct-no');
+  const informationHelpfulYes = document.getElementById('information-helpful-yes');
+  const informationHelpfulNo = document.getElementById('information-helpful-no');
+
+  // Function to store the feedback in the database
+  // Function to store the feedback in the database
+function storeFeedback(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const feedback = feedbackText.value;
+  const predictionCorrect = predictionCorrectYes.checked ? 'yes' : 'no';
+  const informationHelpful = informationHelpfulYes.checked ? 'yes' : 'no';
+
+  // Create a data object with the feedback values
+  const data = {
+    feedback: feedback,
+    prediction_correct: predictionCorrect,
+    information_helpful: informationHelpful
+  };
+
+  // Send an AJAX request to save the feedback
+  fetch('/display_capture', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(result => {
+      // Handle the response or perform any necessary actions
+      console.log(result);
+    })
+    .catch(error => {
+      // Handle any errors
+      console.error(error);
+    });
+
+  // Clear the form
+  feedbackText.value = '';
+  predictionCorrectYes.checked = false;
+  predictionCorrectNo.checked = false;
+  informationHelpfulYes.checked = false;
+  informationHelpfulNo.checked = false;
+}
+
+  
+  // Function to convert the feedbacks array to a CSV string
+  function convertToCSV() {
+    const header = Object.keys(feedbacks[0]).join(','); // CSV header row
+    const rows = feedbacks.map(feedbackData =>
+      Object.values(feedbackData).join(',')
+    ); // CSV data rows
+  
+    return `${header}\n${rows.join('\n')}`; // Combine header and data rows
+  }
+  
+  // Function to download the feedbacks as a CSV file
+  
+  
+  // Add event listeners
+  feedbackForm.addEventListener('submit', storeFeedback);
+
+    const retakeButton = document.getElementById('retake-button');
+    const submitFeed = document.getElementById('submit-button');
+
+    // Function to reload the page from the start
+    function reloadPage() {
+      window.location.href = '/';
+    }
+
+    // Add event listener to the retake button
+    retakeButton.addEventListener('click', function() {
+      // Add CSS class to flash the button
+      retakeButton.classList.add('flash');
+      setTimeout(function() {
+        retakeButton.classList.remove('flash');
+      }, 300);
+
+      // Reload the page
+      reloadPage();
+    });
+    // Attach the capture function to the button click event
+    submitFeed.addEventListener('click', function() {
+      // Add CSS class to flash the button
+      submitFeed.classList.add('flash');
+      setTimeout(function() {
+        submitFeed.classList.remove('flash');
+      }, 200);
+    });
+  </script>
+</body>
+</html>

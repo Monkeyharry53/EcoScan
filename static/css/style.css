@@ -1,0 +1,142 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#video-feed {
+  width: 100%; /* Adjust the size as needed */
+  max-width: 400px; /* Adjust the size as needed */
+  border: 1px solid #ccc;
+}
+
+#capture-button,
+#retake-button,
+#submit-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+#download-csv-button{
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  background-color: rgb(16, 16, 63);
+  color: white;
+  cursor: pointer;
+}
+
+#download-button{
+  position: relative;
+   /* Adjust the value as needed */
+  right: 78px;
+  padding-top: 15px;
+}
+
+#video-container,
+.content {
+  position: relative;
+  width: 100%;
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#center-lines {
+  position: absolute;
+  top: 40%;
+  left: 45%;
+  transform: translate(-40%, -40%);
+  border: 4px dashed red;
+  width: 40%;
+  height: 60%;
+  pointer-events: none;
+}
+
+/* Hide the sidebars on smaller screens */
+#sidebar-left,
+#sidebar-right {
+  display: none;
+}
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+.flash {
+  animation: flash 0.3s linear;
+}
+
+
+/* Media query for screens smaller than 768px (tablet) */
+@media (max-width: 768px) {
+  #video-feed {
+    max-width: 100%;
+    height: auto;
+  }
+
+  #capture-button,
+  #retake-button,
+  #submit-button,
+  #download-csv-button {
+    font-size: 20px; /* Adjust the font size as needed */
+    padding: 15px 20px; /* Adjust the padding as needed */
+  }
+
+  #download-button {
+    right: 48px;
+  }
+}
+
+/* Media query for screens smaller than 480px (mobile) */
+@media (max-width: 480px) {
+  #video-container {
+    flex-direction: column-reverse;
+  }
+
+  #video-feed {
+    max-width: 100%;
+    height: auto;
+  }
+
+  #center-lines {
+    width: 80%;
+    height: 40%;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+  }
+  #capture-button{
+    position: relative;
+   /* Adjust the value as needed */
+    bottom: 10px;
+  }
+
+  #capture-button,
+  #retake-button,
+  #submit-button,
+  #download-csv-button {
+    font-size: 20px; /* Adjust the font size as needed */
+    padding: 15px 30px; /* Adjust the padding as needed */
+  }
+
+  #download-button {
+    right: 38px;
+  }
+}
