@@ -88,7 +88,7 @@ def display_capture():
     if count == 1:
         return render_template('capture.html')
     
-    rf = Roboflow(api_key="wsIma2xVJu6WSxVJNXwG")
+    rf = Roboflow(api_key="YOUR API")
     project = rf.workspace("material-identification").project("garbage-classification-3")
     #model = YOLO("C:/Users/manjo/rgc/runs/detect/train/weights/best.pt")
     model = project.version(2).model
